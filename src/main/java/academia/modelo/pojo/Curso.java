@@ -7,7 +7,7 @@ public class Curso {
 	private String identificador;
 	private int horas;
 	
-	private Profesor profesor;
+	private Usuario profesor;
 	//TODO ArrayList<alumnos>
 
 	
@@ -21,7 +21,7 @@ public class Curso {
 		this.nombre = "";
 		this.identificador = "";
 		this.horas = 0;
-		this.profesor = new Profesor();
+		this.profesor = new Usuario();
 	}
 
 	public void setId(int id) {
@@ -52,11 +52,11 @@ public class Curso {
 		this.horas = horas;
 	}
 
-	public Profesor getProfesor() {
+	public Usuario getProfesor() {
 		return profesor;
 	}
 
-	public void setProfesor(Profesor profesor) {
+	public void setProfesor(Usuario profesor) {
 		this.profesor = profesor;
 	}
 

@@ -31,7 +31,12 @@ public class CursoController extends HttpServlet {
 		CursoDAO dao=new CursoDAOImpl();
 		ArrayList<Curso>cursos=new ArrayList<Curso>();
 		
-		cursos=dao.listar();
+		try {
+			cursos=dao.listar();
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 		
 		request.setAttribute("cursos", cursos);
 		
