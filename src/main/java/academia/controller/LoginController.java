@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import academia.modelo.dao.UsuarioDAO;
 import academia.modelo.dao.UsuarioDAOImpl;
 import academia.modelo.pojo.Usuario;
+import academia.utilidades.Alerta;
 
 /**
  * Servlet implementation class LoginController
@@ -43,16 +44,19 @@ public class LoginController extends HttpServlet {
 		
 		try {
 			usuarioLogeado=dao.buscarUsuario(nomUsu, pass);
+			
 			if (usuarioLogeado!=null) {
-				
+				request.getSession().setAttribute("usuario", usuarioLogeado);	
+				//request.setAttribute("usuario", usuarioLogeado);
 				if (usuarioLogeado.getRol()==Usuario.ROL_PROFESOR ) {
-					redireccion="privado/profesor.jsp";
+					redireccion="privado/profesor";
+					
 				}else if(usuarioLogeado.getRol()==Usuario.ROL_USUARIO) {
 					redireccion="privado/alumno.jsp";
 				}
 			}else {//si falla el pasword, se mantiene el nombre
 				request.setAttribute("nombre", nomUsu);
-				request.setAttribute("error", "Login incorrecto");
+				request.setAttribute("error", new Alerta("Login incorrecto","alert-danger"));
 			}
 			
 			

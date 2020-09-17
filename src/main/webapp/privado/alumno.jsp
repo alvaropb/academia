@@ -8,5 +8,6 @@
 </head>
 <body>
 <h1>Alumno</h1>
+	<h2>${usuario }</h2>
 </body>
 </html>

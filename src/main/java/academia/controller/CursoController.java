@@ -38,7 +38,7 @@ public class CursoController extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		request.setAttribute("cursos", cursos);
+		request.setAttribute("listaCursos", cursos);
 		
 		request.getRequestDispatcher("/listaCursos.jsp").forward(request, response);
 		

@@ -2,31 +2,20 @@
     pageEncoding="UTF-8"%>
 	
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<jsp:include page="head.jsp"/>
+<jsp:include page="includes/head.jsp"/>
 
-<h1><a href="login.jsp">->login</a></h1>
-<table>
-  <tr>
-    <th>id curso</th>
-    <th>nombre curso</th>
-    <th>Identificador</th>
-    <th>horas</th>
-    <th>id profesor</th>
-    <th>profesor</th>
-    <th></th>
-  </tr>
-  <c:forEach items="${cursos }" var="curso">
-	  <tr>
-	    <td>${curso.id }</td>
-	    <td>${curso.nombre }</td>
-	    <td>${curso.identificador}</td>
-	    <td>${curso.horas }</td>
-	    <td>${curso.profesor.id }</td>
-	    <td>${curso.profesor.nombre} ${curso.profesor.apellidos }</td>
-	  </tr>
-  </c:forEach>
-  
-</table>
+
+
+<h2>TAREAS</h2>
+<ol>
+	<li>Maquetar pagina web, css e includes para reutilizar</li>
+	<li>miercoles: Si se logea un PROFESOR que muestre sus curso, desde la misma JSP
+	 podria crear un nuevo curso y eliminarlo</li>
+	<li>jueves: Si se logea un ALUMNO que muestre sus curso a los que esta inscrito, 
+	desde la misma JSP apuntarse a un nuevo curso</li>	
+</ol>
+
+<jsp:include page="includes/tablaCursos.jsp"/>
 
     
-<jsp:include page="footer.jsp"/>
+<jsp:include page="includes/footer.jsp"/>
