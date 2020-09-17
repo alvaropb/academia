@@ -42,4 +42,27 @@ public interface CursoDAO {
 	 */
 	public Curso insert(Curso curso)throws Exception;
 	
+	/**
+	 * Método que retorna un listado de cursos en los que el alumno esta matriculado 
+	 * o no 
+	 * @param id
+	 * @param apuntado 
+	 * @return Listado de cursos en los que el usuario esta matriculado si apuntado=TRUE
+	 * Retorna el listado de cursos en los que NO esta matriculado si apuntado=FALSE
+	 * @throws Exception
+	 */
+	public ArrayList<Curso> getByIdAlumno(int id,boolean apuntado)throws Exception;
+	
+	/**
+	 * Método que inscribe un alumno(id) en un curso (idCurso)
+	 * @param idCurso
+	 * @param id el id del usuario
+	 * @return 
+	 * @throws Exception
+	 */
+	public int inscribirCurso(int idCurso, int id)throws Exception;
+
+	
+
+	
 }

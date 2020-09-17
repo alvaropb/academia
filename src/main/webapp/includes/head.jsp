@@ -44,10 +44,10 @@
 		</nav>
 		<!-- main  -->
 		<main class="container">
-			<c:if test="${null ne error }">
+			<c:if test="${null ne mensaje }">
 				
-				<div class="alert ${error.tipo }" role="alert">
-				  ${error.mensaje }
+				<div class="alert ${mensaje.tipo }" role="alert">
+				  ${mensaje.mensaje }
 				</div>
 			</c:if>
 			

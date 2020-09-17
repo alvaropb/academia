@@ -52,11 +52,11 @@ public class LoginController extends HttpServlet {
 					redireccion="privado/profesor";
 					
 				}else if(usuarioLogeado.getRol()==Usuario.ROL_USUARIO) {
-					redireccion="privado/alumno.jsp";
+					redireccion="privado/alumno";
 				}
 			}else {//si falla el pasword, se mantiene el nombre
 				request.setAttribute("nombre", nomUsu);
-				request.setAttribute("error", new Alerta("Login incorrecto","alert-danger"));
+				request.setAttribute("mensaje", new Alerta("Login incorrecto","alert-danger"));
 			}
 			
 			

@@ -52,7 +52,32 @@ private static final String GET_CURSO_BY_ID = " 	SELECT \n" +
 		"				 	WHERE c.id =?;";
 private static final String DELETE_CURSO_BY_ID = "DELETE FROM cursos WHERE id=?";
 private static final String SQL_INSERT_CURSO = "INSERT INTO cursos (curso,identificador,horas,idProfesor) VALUES(?,?,?,?);";
-	
+private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curso',  \n" + 
+						"		c.horas,\n" + 
+						"		c.curso as 'nombre_curso', \n" + 
+						"		c.identificador ,\n" + 
+						"		p.id as 'id_profesor', \n" + 
+						"		p.nombre as 'nombre_profesor', \n" + 
+						"		p.apellidos ,\n" + 
+						"		p.rol as 'id_rol', \n" + 
+						"		p.password as 'password'\n" + 
+						"	FROM alumnosCurso ac \n" + 
+						"	INNER JOIN cursos c ON c.id =ac.idCurso \n" + 
+						"	INNER JOIN usuarios p ON c.idProfesor =p.id \n" + 
+						"	WHERE ac.idAlumno=?;";
+	private static final String SQL_LISTAR_CURSOS_NO_INSCRITO="SELECT 	c.id as 'id_curso',  \n" + 
+					"		c.horas,\n" + 
+					"		c.curso as 'nombre_curso', \n" + 
+					"		c.identificador ,\n" + 
+					"		p.id as 'id_profesor', \n" + 
+					"		p.nombre as 'nombre_profesor', \n" + 
+					"		p.apellidos ,\n" + 
+					"		p.rol as 'id_rol', \n" + 
+					"		p.password as 'password'\n" + 
+					"	FROM cursos c\n" + 
+					"	INNER JOIN usuarios p ON c.idProfesor =p.id \n" + 
+					"	WHERE c.id NOT IN(SELECT ac.idCurso FROM alumnosCurso ac WHERE idAlumno=?);";
+	private static final String SQL_INSCRIBIR_CURSO = "INSERT INTO alumnosCurso (idCurso,idAlumno)VALUES(?,?);";
 
 	@Override
 	public ArrayList<Curso> listar() throws Exception {
@@ -158,6 +183,55 @@ private static final String SQL_INSERT_CURSO = "INSERT INTO cursos (curso,identi
 		return curso;
 	}
 	
+	
+	@Override
+	public ArrayList<Curso> getByIdAlumno(int id,boolean apuntado) throws Exception{
+		ArrayList<Curso>cursosAlumno=new ArrayList<Curso>();
+		String sql=SQL_LISTAR_CURSOS_NO_INSCRITO;
+		
+		if (apuntado) {
+			sql=SQL_LISTAR_CURSOS_ALUMNO;
+		}
+		
+		try(Connection conn=ConnectionManager.getConnection();
+				PreparedStatement pst= conn.prepareStatement(sql)){
+			pst.setInt(1, id);
+			try(ResultSet rs=pst.executeQuery()) {
+				while (rs.next()) {
+					cursosAlumno.add(mapper(rs));
+				}
+				
+			}
+			
+		}
+		
+		
+		return cursosAlumno;
+	}
+	
+	@Override
+	public int inscribirCurso(int idCurso, int id) throws Exception {
+		int idR=0;
+		
+		try(Connection conn=ConnectionManager.getConnection();
+				PreparedStatement pst=conn.prepareStatement(SQL_INSCRIBIR_CURSO,Statement.RETURN_GENERATED_KEYS)) {
+			pst.setInt(1, idCurso);
+			pst.setInt(2, id);
+			pst.executeUpdate();
+			try(ResultSet rs=pst.getGeneratedKeys();) {
+				if (rs.next()) {
+					idR=rs.getInt(1);
+				}
+			}
+			
+		}
+		
+		return idR;
+	}
+
+	
+	
+	
 	/**
 	 * Método para mapear un curso desde un result set
 	 * @param rs
@@ -183,6 +257,13 @@ private static final String SQL_INSERT_CURSO = "INSERT INTO cursos (curso,identi
 		c.setProfesor(p);
 		return c;
 	}
+
+
+
+
+
+
+
 
 
 

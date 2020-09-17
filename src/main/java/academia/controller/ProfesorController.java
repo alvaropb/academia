@@ -11,6 +11,7 @@ import academia.modelo.dao.CursoDAO;
 import academia.modelo.dao.CursoDAOImpl;
 import academia.modelo.pojo.Curso;
 import academia.modelo.pojo.Usuario;
+import academia.utilidades.Alerta;
 
 /**
  * Servlet implementation class ProfesorController
@@ -77,13 +78,13 @@ public class ProfesorController extends HttpServlet {
 				curso.setProfesor(usu);
 				
 				curso=daoCurso.insert(curso);
-				request.setAttribute("mensaje", "Insercion correcta");			
+				request.setAttribute("mensaje", new Alerta("Insercion correcta", "alert-success"));			
 			}
 
 			redireccion = "profesor.jsp";
 			request.setAttribute("listaCursos", daoCurso.listarPorProfesor(usu.getId()));
 		} catch (Exception e) {
-			request.setAttribute("mensaje", "Ocurrio un error");
+			request.setAttribute("mensaje", new Alerta("Ocurrio un error", "alert-danger"));
 			e.printStackTrace();
 		} finally {
 			request.getRequestDispatcher(redireccion).forward(request, response);
