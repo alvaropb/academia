@@ -7,11 +7,29 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.apache.log4j.Logger;
+
+import academia.controller.ProfesorFiltro;
 import academia.modelo.ConnectionManager;
 import academia.modelo.pojo.Curso;
 import academia.modelo.pojo.Usuario;
 
 public class CursoDAOImpl implements CursoDAO {
+	private final static Logger LOG = Logger.getLogger(CursoDAOImpl.class);
+	
+	
+	
+//patron singleton
+	
+    private static final CursoDAOImpl INSTANCE = new CursoDAOImpl();
+
+    private CursoDAOImpl() {}
+
+    public static CursoDAOImpl getInstance() {
+        return INSTANCE;
+    }
+	
+	
 private static final String SQL_LISTAR_CURSOS=" 	SELECT\n" + 
 				" 		c.id as 'id_curso',\n" + 
 				" 		c.horas,\n" + 
@@ -86,6 +104,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 		try (Connection conn=ConnectionManager.getConnection();
 				PreparedStatement pst= conn.prepareStatement(SQL_LISTAR_CURSOS);
 				ResultSet rs=pst.executeQuery()){
+				LOG.trace(pst);
 				while (rs.next()) {
 					
 					Curso c=new Curso();
@@ -109,6 +128,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 				PreparedStatement pst=conn.prepareStatement(SQL_LISTAR_CURSOS_PROFESOR);) {
 			pst.setInt(1, id);
 			try (ResultSet rs=pst.executeQuery()){
+				LOG.trace(pst);
 				while (rs.next()) {
 					
 					Curso c=new Curso();
@@ -132,7 +152,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 				PreparedStatement pst=conn.prepareStatement(GET_CURSO_BY_ID)) {
 			
 			pst.setInt(1, id);
-			
+			LOG.trace(pst);
 			try (ResultSet rs=pst.executeQuery();){
 				if (rs.next()) {
 					curso=mapper(rs);
@@ -149,6 +169,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 		try (Connection conn=ConnectionManager.getConnection();
 				PreparedStatement pst=conn.prepareStatement(DELETE_CURSO_BY_ID)){
 			pst.setInt(1, id);
+			LOG.trace(pst);
 			// recuperar antes de borrar			
 			curso=getById(id);
 			
@@ -169,7 +190,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 			pst.setString(2, curso.getIdentificador());
 			pst.setInt(3, curso.getHoras());
 			pst.setInt(4, curso.getProfesor().getId());
-			
+			LOG.trace(pst);
 			pst.executeUpdate();
 			try (ResultSet rs=pst.getGeneratedKeys();){
 				if (rs.next()) {
@@ -196,6 +217,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 		try(Connection conn=ConnectionManager.getConnection();
 				PreparedStatement pst= conn.prepareStatement(sql)){
 			pst.setInt(1, id);
+			LOG.trace(pst);
 			try(ResultSet rs=pst.executeQuery()) {
 				while (rs.next()) {
 					cursosAlumno.add(mapper(rs));
@@ -217,6 +239,7 @@ private static final String SQL_LISTAR_CURSOS_ALUMNO = "SELECT 	c.id as 'id_curs
 				PreparedStatement pst=conn.prepareStatement(SQL_INSCRIBIR_CURSO,Statement.RETURN_GENERATED_KEYS)) {
 			pst.setInt(1, idCurso);
 			pst.setInt(2, id);
+			LOG.trace(pst);
 			pst.executeUpdate();
 			try(ResultSet rs=pst.getGeneratedKeys();) {
 				if (rs.next()) {

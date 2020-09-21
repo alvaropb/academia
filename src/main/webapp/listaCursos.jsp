@@ -16,8 +16,8 @@
 </ol>
 Extra
 <ol>
-	<li>Trazas de LOG</li>
-	<li>Singleton</li>
+	<li>Trazas de LOG OK</li>
+	<li>->Singleton</li>
 	<li>Gestion de errores TRY y CACTH sobre todo en los controladore</li>
 	<li>Validacion de datos de los formulario con javax.validation</li>
 	<li>Gestion de Seguridad, que los profesores y alumnos solo puedan modificar sus datos, No poder saltarse el Login</li>

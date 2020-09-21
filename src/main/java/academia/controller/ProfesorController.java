@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import academia.modelo.dao.CursoDAO;
 import academia.modelo.dao.CursoDAOImpl;
 import academia.modelo.pojo.Curso;
@@ -19,7 +21,7 @@ import academia.utilidades.Alerta;
 @WebServlet("/privado/profesor")
 public class ProfesorController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
+	private final static Logger LOG = Logger.getLogger(ProfesorController.class);
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
 	 *      response)
@@ -29,7 +31,7 @@ public class ProfesorController extends HttpServlet {
 
 		String idCursoP = request.getParameter("id");
 		Usuario usu = (Usuario) request.getSession().getAttribute("usuario");
-		CursoDAO daoCurso = new CursoDAOImpl();
+		CursoDAO daoCurso = CursoDAOImpl.getInstance();
 		String redireccion = "";
 		try {
 			if (idCursoP!=null) {
@@ -41,7 +43,7 @@ public class ProfesorController extends HttpServlet {
 				// comprobar que el curso pertenece al profesor
 				if (curso.getProfesor().getId() == usu.getId()) {
 					curso = daoCurso.delete(curso.getId());
-					
+					request.setAttribute("mensaje", new Alerta("Eliminacion correcta", "alert-success"));	
 				}
 				
 			}
@@ -49,7 +51,7 @@ public class ProfesorController extends HttpServlet {
 			request.setAttribute("listaCursos", daoCurso.listarPorProfesor(usu.getId()));
 
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error(e);
 		} finally {
 			redireccion = "profesor.jsp";
 			request.getRequestDispatcher(redireccion).forward(request, response);
@@ -64,7 +66,7 @@ public class ProfesorController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String redireccion = "";
-		CursoDAO daoCurso = new CursoDAOImpl();
+		CursoDAO daoCurso = CursoDAOImpl.getInstance();
 		Usuario usu = (Usuario) request.getSession().getAttribute("usuario");
 
 		Curso curso = new Curso();
@@ -89,7 +91,7 @@ public class ProfesorController extends HttpServlet {
 			request.setAttribute("listaCursos", daoCurso.listarPorProfesor(usu.getId()));
 		} catch (Exception e) {
 			request.setAttribute("mensaje", new Alerta("Ocurrio un error", "alert-danger"));
-			e.printStackTrace();
+			LOG.error(e);
 		} finally {
 			request.getRequestDispatcher(redireccion).forward(request, response);
 		}

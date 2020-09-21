@@ -5,10 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.log4j.Logger;
+
 import academia.modelo.ConnectionManager;
 import academia.modelo.pojo.Usuario;
 
 public class UsuarioDAOImpl implements UsuarioDAO {
+	private final static Logger LOG = Logger.getLogger(UsuarioDAOImpl.class);
+
+	
+	//singleton
+    private static final UsuarioDAOImpl INSTANCE = new UsuarioDAOImpl();
+
+    private UsuarioDAOImpl() {}
+
+    public static UsuarioDAOImpl getInstance() {
+        return INSTANCE;
+    }
+	
+	
 	
 	private static final String SQL_BUSCAR_USUARIO=" SELECT u.id 'id_usuario',\n" + 
 							" 		u.nombre ,\n" + 
@@ -26,6 +41,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 			
 			pst.setString(1, nombre);
 			pst.setString(2, password);
+			LOG.trace(pst);
 			 try(ResultSet rs=pst.executeQuery()) {
 				 if (rs.next()) {
 					usuario=mapper(rs);

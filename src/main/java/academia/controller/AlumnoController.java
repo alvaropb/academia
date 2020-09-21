@@ -39,7 +39,7 @@ public class AlumnoController extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String redireccion="alumno.jsp";
 		
-		CursoDAO daoCurso=new CursoDAOImpl();
+		CursoDAO daoCurso=CursoDAOImpl.getInstance();
 		
 		
 		
@@ -74,12 +74,6 @@ public class AlumnoController extends HttpServlet {
 			request.setAttribute("ofertaCursos", ofertaCursos);
 			request.getRequestDispatcher(redireccion).forward(request, response);
 		}
-		
-		
-		// cargar los cursos en los que NO esta inscrito el alumno
-		
-		//redirigir a privado/alumno.jsp
-		
 		
 		
 	}

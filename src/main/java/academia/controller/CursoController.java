@@ -30,20 +30,21 @@ public class CursoController extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		CursoDAO dao=new CursoDAOImpl();
+		CursoDAO dao=CursoDAOImpl.getInstance();
 		ArrayList<Curso>cursos=new ArrayList<Curso>();
 		
 		try {
 			cursos=dao.listar();
 		} catch (Exception e) {
 			
-			LOG.error("error en 40 "+CursoController.class);
+			LOG.error(e);
+		}finally {
+			LOG.trace("redirigiendo a listaCursos.jsp");
+			request.setAttribute("listaCursos", cursos);
+
+			request.getRequestDispatcher("/listaCursos.jsp").forward(request, response);
+			
 		}
-		LOG.trace("redirigiendo a listaCursos.jsp");
-		request.setAttribute("listaCursos", cursos);
-		
-		request.getRequestDispatcher("/listaCursos.jsp").forward(request, response);
-		
 	}
 
 }

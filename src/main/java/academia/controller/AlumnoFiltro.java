@@ -23,8 +23,9 @@ import academia.modelo.pojo.Usuario;
  */
 @WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD }, urlPatterns = { "/privado/alumno" })
 public class AlumnoFiltro implements Filter {
-	
+
 	private final static Logger LOG = Logger.getLogger(AlumnoFiltro.class);
+
 	/**
 	 * Default constructor.
 	 */
@@ -48,22 +49,22 @@ public class AlumnoFiltro implements Filter {
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpSession sesion = req.getSession();
 		Usuario usu = (Usuario) sesion.getAttribute("usuario");
-		
-		HttpServletResponse res=(HttpServletResponse) response;
+
+		HttpServletResponse res = (HttpServletResponse) response;
 
 		if (usu == null) {
-			LOG.trace("Usuario intento entrar sin permisos");
-			res.sendRedirect(req.getContextPath()+"/login.jsp");
+			LOG.warn("Usuario intento entrar sin permisos");
+			res.sendRedirect(req.getContextPath() + "/login.jsp");
 		} else {
 			if (Usuario.ROL_USUARIO == usu.getRol()) {
 				chain.doFilter(request, response);
-			}else {
-				LOG.trace("profesor intentó entrar a seccion de alumnos");
-				res.sendRedirect(req.getContextPath()+"/privado/profesor");
+				LOG.trace("redirigiendo a Alumno");
+			} else {
+				LOG.warn("profesor intentó entrar a seccion de alumnos");
+				res.sendRedirect(req.getContextPath() + "/privado/profesor");
 			}
 		}
 
-		
 	}
 
 	/**

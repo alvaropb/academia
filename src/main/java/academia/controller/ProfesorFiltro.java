@@ -59,11 +59,11 @@ public class ProfesorFiltro implements Filter {
 				chain.doFilter(request, response);
 				
 			}else if (Usuario.ROL_USUARIO == usu.getRol()) {
-				LOG.trace("alumno intento ir a seccion profesores");
+				LOG.warn("alumno intento ir a seccion profesores");
 				httpRes.sendRedirect(httpReq.getContextPath()+"/privado/alumno");
 			}
 		}else {
-			LOG.trace("Se intento entrar a zona de profesor sin permisos");
+			LOG.warn("Se intento entrar a zona de profesor sin permisos");
 			httpRes.sendRedirect(httpReq.getContextPath()+"/login.jsp");
 		}
 		
