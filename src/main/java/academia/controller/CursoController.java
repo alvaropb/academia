@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import academia.modelo.dao.CursoDAO;
 import academia.modelo.dao.CursoDAOImpl;
 import academia.modelo.pojo.Curso;
@@ -19,7 +21,7 @@ import academia.modelo.pojo.Curso;
 @WebServlet("/cursos")
 public class CursoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private final static Logger LOG = Logger.getLogger(CursoController.class);
 	
 	
 
@@ -35,9 +37,9 @@ public class CursoController extends HttpServlet {
 			cursos=dao.listar();
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			LOG.error("error en 40 "+CursoController.class);
 		}
-		
+		LOG.trace("redirigiendo a listaCursos.jsp");
 		request.setAttribute("listaCursos", cursos);
 		
 		request.getRequestDispatcher("/listaCursos.jsp").forward(request, response);

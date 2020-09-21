@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.log4j.Logger;
+
 import academia.modelo.dao.CursoDAO;
 import academia.modelo.dao.CursoDAOImpl;
 import academia.modelo.pojo.Curso;
@@ -21,7 +23,7 @@ import academia.utilidades.Alerta;
 @WebServlet("/privado/alumno")
 public class AlumnoController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
+	private final static Logger LOG = Logger.getLogger(AlumnoController.class);
 
 	/**
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
@@ -66,7 +68,7 @@ public class AlumnoController extends HttpServlet {
 			ofertaCursos=daoCurso.getByIdAlumno(usu.getId(),Boolean.FALSE);
 		} catch (Exception e) {
 			
-			e.printStackTrace();
+			LOG.error(e);
 		}finally {
 			request.setAttribute("listaCursos", cursosInscrito);
 			request.setAttribute("ofertaCursos", ofertaCursos);
