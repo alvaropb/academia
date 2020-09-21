@@ -32,16 +32,20 @@ public class ProfesorController extends HttpServlet {
 		CursoDAO daoCurso = new CursoDAOImpl();
 		String redireccion = "";
 		try {
-			int id = Integer.parseInt(idCursoP);
-
-			// recuperar el curso
-			Curso curso = daoCurso.getById(id);
-
-			// comprobar que el curso pertenece al profesor
-			if (curso.getProfesor().getId() == usu.getId()) {
-				curso = daoCurso.delete(curso.getId());
-
+			if (idCursoP!=null) {
+				int id = Integer.parseInt(idCursoP);
+				
+				// recuperar el curso
+				Curso curso = daoCurso.getById(id);
+				
+				// comprobar que el curso pertenece al profesor
+				if (curso.getProfesor().getId() == usu.getId()) {
+					curso = daoCurso.delete(curso.getId());
+					
+				}
+				
 			}
+			
 			request.setAttribute("listaCursos", daoCurso.listarPorProfesor(usu.getId()));
 
 		} catch (Exception e) {
